@@ -16,21 +16,52 @@ import pandas as pd
 
 
 
-input_file = '/Users/alistairperry/Documents/Cambridge/Project_3/AllMEGlist_Compiled.csv'
+input_file = 'U:\Documents\Project_3\AllMEGlist_Compiled.csv'
 
 
-MEGdata = pd.read_csv(input_file)
+MEG_df = pd.read_csv(input_file)
 
 
-MEGdata_wBIDs = MEGdata.copy()
+BIDS_basedir = "/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Release/"
+
+sess = "ses-meg1"
+
+megfname_pfix  = "task-Rest_meg.fif"
+
+
 
 
 BIDs_ID = []
 
-for x in range(1, len(MEGdata_wBIDs['S_ID'])+1):
+BIDs_rawdir = []
+
+BIDs_fname = []
+
+
+for x in range(1, len(MEG_df['S_ID'])+1):
     
-    BIDs_ID.append("sub-Sub{:04d}".format(x)) 
+    new_ID = "sub-Sub{:04d}".format(x)
     
+    BIDs_ID.append(new_ID) 
+    
+    BIDs_rawdir.append(BIDS_basedir + new_ID + "/")
+    
+    BIDs_fname.append(new_ID + "_" + sess + "_" + megfname_pfix)
+
+
+
+#Join together
+
+frames = [pd.DataFrame({'BIDS_ID': BIDs_ID, 'BIDS_rawdir': BIDs_rawdir, 
+                        'BIDS_fame': BIDs_fname}), MEG_df]
+    
+MEG_df_wBIDS = pd.concat(frames, axis=1)    
+    
+
+
+''' Here comes hard part '''
+
+
 
 MEGdata_wBIDs['BIDs_ID'] = BIDs_ID
 
