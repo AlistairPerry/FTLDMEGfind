@@ -59,7 +59,7 @@ frames = [pd.DataFrame({'BIDS_ID': BIDs_ID, 'BIDS_rawdir': BIDs_rawdir,
     
 MEG_df_wBIDS = pd.concat(frames, axis=1)    
     
-
+MEG_df_wBIDS['Dir'] = MEG_df_wBIDS['Dir'].apply(lambda x: x + "/")
 
 
 
@@ -68,12 +68,13 @@ MEG_df_wBIDS = pd.concat(frames, axis=1)
 def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsfile):
     
     import shutil
-
+    
+    print(rawdir + rawmegfile)
     
     os.chdir(rawdir)
     
 
-    if os.exist(rawdir + rawmegfile):
+    if os.path.exists(rawdir + rawmegfile):
         
         shutil.copyfile(rawdir + rawmegfile, targbidsfile)
         
@@ -126,7 +127,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsfile):
 
 #items = [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in range(len(BIDs_ID))]        
 
-from random import random
+import random
 
 items_test =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in random.sample(range(len(BIDs_ID)), k=10)] 
 
