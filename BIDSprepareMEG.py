@@ -13,10 +13,11 @@ Setup
 
 
 import pandas as pd
+import os
+from multiprocessing import Pool
 
 
-
-input_file = 'U:\Documents\Project_3\AllMEGlist_Compiled.csv'
+input_file = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/AllMEGlist_Compiled.csv'
 
 
 MEG_df = pd.read_csv(input_file)
@@ -53,55 +54,93 @@ for x in range(1, len(MEG_df['S_ID'])+1):
 #Join together
 
 frames = [pd.DataFrame({'BIDS_ID': BIDs_ID, 'BIDS_rawdir': BIDs_rawdir, 
-                        'BIDS_fame': BIDs_fname}), MEG_df]
+                        'BIDS_fname': BIDs_fname}), MEG_df]
     
 MEG_df_wBIDS = pd.concat(frames, axis=1)    
     
 
 
+
+
 ''' Here comes hard part '''
 
-
-
-MEGdata_wBIDs['BIDs_ID'] = BIDs_ID
-
-
-
-
-
-#bids raw dir
-
-etc
-
-
-#bids raw file name
-
-add
-
-
-#find file
-
-#lower case all file names
-
-see if file exits
-
-
-if not:
+def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsfile):
     
-    rsc1
+    import shutil
+
     
-    closed
+    os.chdir(rawdir)
     
 
-if missing
-
-add1
-
-if exits:
+    if os.exist(rawdir + rawmegfile):
+        
+        shutil.copyfile(rawdir + rawmegfile, targbidsfile)
+        
+        file_exists = 1
+        
     
-parallelize     
+    else:   
+    
+        rawfile_lc = rawmegfile.lower()       
+        
+        all_dirs = []; all_files = []
+        
+        
+        for root, dirs, files in os.walk(rawdir):
+        
+            all_files.extend(files); all_dirs.extend(files)
+                
+        
+        
+        #Need to lower-case
+                
+        
+        try:
+                    
+            idx = all_files_lc.index(rawfile_lc)
 
-#mne-python scan length
+        except:
+                    
+            print("File can't be found")
+            
+            file_exists = 0
+                    
+            
+        else:
+            
+            new_dir = rawdir + all_dirs[0] + "/"
+                
+            new_file = all_files[idx]
+                
+                
+            shutil.copyfile(str(new_dir) + str(new_file), targbidsfile)
+                
+            file_exists = 1
+   
+            
+            
+    return file_exists
+        
+        
+
+#items = [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in range(len(BIDs_ID))]        
+
+from random import random
+
+items_test =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in random.sample(range(len(BIDs_ID), k=10))] 
 
 
+out_find = []
 
+# entry point for the program
+if __name__ == '__main__':
+    
+    # create the process pool
+    with Pool() as pool:      
+            
+        # call the same function with different data in parallel
+        for result in pool.starmap(copy_megfile_toBIDS, items_test):
+            # report the value to show progress
+            
+            out_find.append(result)
+    
