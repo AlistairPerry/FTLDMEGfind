@@ -128,7 +128,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsfile):
 
 from random import random
 
-items_test =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in random.sample(len(BIDs_ID), k=10))] 
+items_test =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in random.sample(range(len(BIDs_ID)), k=10)] 
 
 
 out_find = []
