@@ -112,7 +112,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
         
         	try:
                     
-            		idx = all_files_lc.index(rawfile_lc)
+			idx = all_files_lc.index(rawfile_lc)
 
         	except:
                     
@@ -123,9 +123,8 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
             
         	else:	
 
-                    print("Found elsewhere")
+                	print("Found elsewhere")
 
-            
             		new_dir = rawdir + all_dirs[0] + "/"
                 
             		new_file = all_files[idx]
