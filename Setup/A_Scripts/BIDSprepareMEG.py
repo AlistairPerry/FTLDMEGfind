@@ -18,6 +18,10 @@ import os
 from multiprocessing import Pool
 from pathlib import Path
 
+
+import fiff_date_time
+
+
 input_file = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/AllMEGlist_Compiled.csv'
 
 
@@ -77,73 +81,74 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
     Path(new_bidsdir).mkdir(parents=True, exist_ok=True)
 
 
-    new_bidsfile = targbidsdir + "ses-meg1/" + "meg/" + targbidsfile
-
 	
     #Find file
     
-    if not os.path.exists(new_bidsfile):
-
-    	os.chdir(rawdir)
-    
-    	if os.path.exists(rawdir + rawmegfile):
+    os.chdir(rawdir)
         
-        	shutil.copyfile(str(rawdir) + str(rawmegfile), str(new_bidsdir) + str(targbidsfile))
+    if os.path.exists(rawdir + rawmegfile):
+        
+        shutil.copyfile(str(rawdir) + str(rawmegfile), str(new_bidsdir) + str(targbidsfile))
         
 
-        	file_exists = 1
+        file_exists = 1
         
     
-    	else:   
+    else:   
     
-        	rawfile_lc = rawmegfile.lower()       
+        rawfile_lc = rawmegfile.lower()       
         
-        	all_dirs = []; all_files = []
+        #Check
         
         
-        	for root, dirs, files in os.walk(rawdir):
         
-            	all_files.extend(files); all_dirs.extend(dirs)
+        
+        all_dirs = []; all_files = [] 
+            
+                
+        for root, dirs, files in os.walk(rawdir):
+                
+            all_files.extend(files)
+            all_dirs.extend(dirs)
                 
         
         
-        	#Need to lower-case
+        #Need to lower-case
                 
+        all_files_lc = list(map(str.lower, all_files))
         
-        	try:
+        
+        try:
                 
                 
-                idx = all_files_lc.index(rawfile_lc)
+            idx = all_files_lc.index(rawfile_lc)
 			
 
-        	except:
+        except:
                     
-            	print("File can't be found")
+            print(rawfile_lc, ": Can't be found")
             
-            	file_exists = 0
+            file_exists = 0
                     
             
-        	else:	
+        else:	
 
-                print("Found elsewhere")
+            print(rawfile_lc, ": Found elsewhere")
 
-            	new_dir = rawdir + all_dirs[0] + "/"
+            new_dir = rawdir + all_dirs[0] + "/"
                 
-            	new_file = all_files[idx]
+            new_file = all_files[idx]
                 
                 
-            	shutil.copyfile(str(new_dir) + str(new_file), str(new_bidsdir) + str(targbidsfile))
+            shutil.copyfile(str(new_dir) + str(new_file), str(new_bidsdir) + str(targbidsfile))
                 
-            	file_exists = 1
+            file_exists = 1
    
             
             
-    	return file_exists
+    return file_exists
         
         
-
-#items = [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in range(len(BIDs_ID))]        
-
 
 items =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], MEG_df_wBIDS.loc[i, 'BIDS_rawdir'], MEG_df_wBIDS.loc[i, 'BIDS_fname']) for i in range(len(BIDs_ID))] 
 
@@ -151,16 +156,35 @@ items =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], MEG_df_wBIDS
 out_find = []
 
 
-# entry point for the program
+run_search = 0
+
+while run_search == 1:
+
+    # entry point for the program
+    if __name__ == '__main__':
+    
+        # create the process pool
+        with Pool() as pool:      
+            
+            # call the same function with different data in parallel
+            pool.starmap(copy_megfile_toBIDS, items)
+
+
+
+items =  [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + 'ses-meg1/meg/' + MEG_df_wBIDS.loc[i, 'BIDS_fname'] for i in range(len(BIDs_ID))]
+
+
+''' Extract time date info '''
+
 if __name__ == '__main__':
     
     # create the process pool
     with Pool() as pool:      
             
         # call the same function with different data in parallel
-        for result in pool.starmap(copy_megfile_toBIDS, items_test):
-            # report the value to show progress
-            
-            out_find.append(result)
+        pool.map(fiff_date_time.run_date_time, items)
 
+
+
+''' Anonymize '''
 

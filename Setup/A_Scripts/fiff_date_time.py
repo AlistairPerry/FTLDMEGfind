@@ -5,6 +5,8 @@ Get measurement date and time for fiff-file
 ==========================================
 
 OH January 2018
+Modified by AP 2022
+
 """
 
 
@@ -34,8 +36,11 @@ def run_date_time(fname_fiff):
     # Read fiff-file
     info = mne.io.read_info(fname_fiff)
 
-    # get date and time in humanly readable format
-    d = datetime.fromtimestamp(info['meas_date'][0])
+    # get date and time
+    # d = datetime.fromtimestamp(info['meas_date'][0]) - 28/10/2022 bug now with orig code
+    
+    d = info['meas_date']
+
 
     year, month, day, hour, minute, second = d.year, d.month, d.day, d.hour, d.minute, d.second
 
