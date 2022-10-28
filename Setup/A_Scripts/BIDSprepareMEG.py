@@ -176,15 +176,32 @@ items =  [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + 'ses-meg1/meg/' + MEG_df_wBIDS.lo
 
 ''' Extract time date info '''
 
+
+time_day_all = []
+ymd_all = []
+
 if __name__ == '__main__':
     
     # create the process pool
     with Pool() as pool:      
             
         # call the same function with different data in parallel
-        pool.map(fiff_date_time.run_date_time, items)
+        for time_day, ymd in pool.map(fiff_date_time.run_date_time, items):
+            #Extract subject timedate iteratively
+            
+            time_day_all.append(time_day)
+            ymd_all.append(ymd); 
 
+
+#Pull into one df
+
+MEGtd_df = pd.DataFrame({'BIDS_ID': MEG_df_wBIDS['BIDS_ID'], 'time_day': time_day_all, 
+                        'ymd': ymd_all})
+
+
+MEGtd_df.to_csv('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEG_timeday.csv', index=False)
 
 
 ''' Anonymize '''
+
 

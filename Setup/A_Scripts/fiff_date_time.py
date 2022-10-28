@@ -42,18 +42,24 @@ def run_date_time(fname_fiff):
     d = info['meas_date']
 
 
-    year, month, day, hour, minute, second = d.year, d.month, d.day, d.hour, d.minute, d.second
-
-    print("Date: %.2d / %.2d / %d " % (day, month, year))
-    print("Time: %.2d : %.2d : %.2d " % (hour, minute, second))
+    year, month, day, hour, minute = d.year, d.month, d.day, d.hour, d.minute
+    
+    
+    time_day = round(hour + (minute / 60), 2)
+    
+    ymd = []
+    ymd = [str(year-2000), ''f"{month:02}",  f"{day:02}"]
+    
+    
+    return time_day, ''.join(ymd)
 
 
 if len(sys.argv)==1:
-
+    
     print('Prints acquisition date and time for fiff file.\n Usage: fiff_date_time.py <fiff_filename.fif>')
 
 else:
 
     fname_fiff = sys.argv[1]
 
-    run_date_time(fname_fiff)
+    time_day, ymd = run_date_time(fname_fiff)
