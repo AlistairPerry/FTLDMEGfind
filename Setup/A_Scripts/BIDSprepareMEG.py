@@ -103,7 +103,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
         
         	for root, dirs, files in os.walk(rawdir):
         
-            		all_files.extend(files); all_dirs.extend(dirs)
+            	all_files.extend(files); all_dirs.extend(dirs)
                 
         
         
@@ -111,28 +111,30 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
                 
         
         	try:
-                    
-			idx = all_files_lc.index(rawfile_lc)
+                
+                
+                idx = all_files_lc.index(rawfile_lc)
+			
 
         	except:
                     
-            		print("File can't be found")
+            	print("File can't be found")
             
-            		file_exists = 0
+            	file_exists = 0
                     
             
         	else:	
 
-                	print("Found elsewhere")
+                print("Found elsewhere")
 
-            		new_dir = rawdir + all_dirs[0] + "/"
+            	new_dir = rawdir + all_dirs[0] + "/"
                 
-            		new_file = all_files[idx]
+            	new_file = all_files[idx]
                 
                 
-            		shutil.copyfile(str(new_dir) + str(new_file), str(new_bidsdir) + str(targbidsfile))
+            	shutil.copyfile(str(new_dir) + str(new_file), str(new_bidsdir) + str(targbidsfile))
                 
-            		file_exists = 1
+            	file_exists = 1
    
             
             
