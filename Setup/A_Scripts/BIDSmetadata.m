@@ -134,7 +134,7 @@ end
 
 %Write out
 
-tsv('participants.tsv')
+bids.util.tsvwrite([DATADIR 'participants.tsv'], participants_tsv);
 
 
 end
