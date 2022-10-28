@@ -16,6 +16,9 @@ addpath('/imaging/rowe/users/ap09/Toolbox/spm12_latest_local')
 
 addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Github/fieldtrip')
 
+addpath(genpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Github/bids-matlab'))
+
+
 ft_defaults()
 
 
@@ -73,9 +76,9 @@ time_info = [];
 n_subjs = length(MEGsubjlist_tab.BIDS_ID);
 
 
-for subj = 1:n_subjs
+parfor subj = 1:n_subjs
     
-    bidsmeg = [MEGsubjlist_tab.BIDS_rawdir(subj) '' 'ses-meg1' '/' 'meg' '/' MEGsubjlist_tab.BIDS_fname]; 
+    bidsmeg = strjoin([MEGsubjlist_tab.BIDS_rawdir(subj) '' 'ses-meg1' '/' 'meg' '/' MEGsubjlist_tab.BIDS_fname(subj)], ''); 
 
     % Setup data2bids
     
@@ -107,9 +110,31 @@ for subj = 1:n_subjs
     %Run
     
     data2bids(cfg)
+    
+    
+    
+    
+
             
 end
 
+
+%Create participants .tsv file
+
+participants_tsv = table;
+
+for subj = 1:n_subjs
+    
+    participants_tsv.participant_id(subj) = MEGsubjlist_tab.BIDS_ID(subj);
+    
+    participants_tsv.group(subj) = MEGsubjlist_tab.Diag(subj);
+    
+end
+
+
+%Write out
+
+tsv('participants.tsv')
 
 
 end
