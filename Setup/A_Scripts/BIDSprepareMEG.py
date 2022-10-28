@@ -123,7 +123,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
             
         	else:	
 
-			print("Found elsewhere")
+                    print("Found elsewhere")
 
             
             		new_dir = rawdir + all_dirs[0] + "/"
