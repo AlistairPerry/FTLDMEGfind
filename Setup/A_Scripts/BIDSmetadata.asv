@@ -1,0 +1,84 @@
+function BIDSmetadata(DATADIR)
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+%Will create necessary .json files
+%Along with creating participants tsv file
+
+%Credit: Delshad 
+
+
+%% Setup
+
+%Paths
+
+addpath('/imaging/rowe/users/ap09/Toolbox/spm12_latest_local')
+
+addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Github/fieldtrip')
+
+ft_defaults()
+
+
+%Data paths
+
+MEGsubjlist = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_wBIDS.csv';
+
+MEGsubjlist_tab = readtable(MEGsubjlist);
+
+
+cd(DATADIR)
+
+
+%% BIDS metadata basics
+
+% Create sidecar settings for MEG part (which uses fieldtrip). 
+% (8)
+meg_sc = []; % we should add emptyroom, derivatevs, 
+meg_sc.tasknames = {
+    'Resting State'
+
+    };
+
+% MEG Task descriptions (9)
+meg_sc.taskdesc = {
+    'Resting state scan with eyes closed.'
+
+    };
+
+% Necessary field, but not really sure what is supposed to be in here.
+meg_sc.instructions = {
+    ''
+    ''
+    ''
+    ''
+    ''
+    ''
+    ''
+    ''
+    ''
+    ''
+    };
+
+
+meg_sc.InstitutionAddress ='15 Chaucer Road, Cambridge, CB2 7EF, England';
+meg_sc.InstitutionName ='Medical Research Council (MRC) Cognition & Brain Sciences Unit (CBU)';
+meg_sc.InstitutionalDepartmentName='Department of Psychiatry, University of Cambridge';
+
+
+time_info = [];
+
+
+%% Loop through individuals
+
+n_subjs = length(MEGsubjlist_tab.BIDS_ID);
+
+
+for subj = 1:n_subjs
+    
+    bidsmeg = [MEGsubjlist_tab.BIDS_rawdir(subj) '' 'ses-meg1' '_' 
+
+
+
+
+end
+

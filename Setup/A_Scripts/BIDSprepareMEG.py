@@ -13,7 +13,6 @@ Setup
 
 
 import pandas as pd
-import numpy as np
 import os
 from multiprocessing import Pool
 from pathlib import Path
@@ -64,6 +63,7 @@ frames = [pd.DataFrame({'BIDS_ID': BIDs_ID, 'BIDS_rawdir': BIDs_rawdir,
 MEG_df_wBIDS = pd.concat(frames, axis=1)    
     
 MEG_df_wBIDS['Dir'] = MEG_df_wBIDS['Dir'].apply(lambda x: x + "/")
+
 
 
 
@@ -174,6 +174,7 @@ while run_search == 1:
 items =  [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + 'ses-meg1/meg/' + MEG_df_wBIDS.loc[i, 'BIDS_fname'] for i in range(len(BIDs_ID))]
 
 
+
 ''' Extract time date info '''
 
 
@@ -198,10 +199,13 @@ if __name__ == '__main__':
 MEGtd_df = pd.DataFrame({'BIDS_ID': MEG_df_wBIDS['BIDS_ID'], 'time_day': time_day_all, 
                         'ymd': ymd_all})
 
+frames = [MEG_df_wBIDS, MEGtd_df]
 
-MEGtd_df.to_csv('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEG_timeday.csv', index=False)
+MEG_df_wBIDS_fin = pd.concat(frames, axis=1)
+
+MEG_df_wBIDS_fin.to_csv('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_wBIDS.csv', index=False)
 
 
-''' Anonymize '''
+
 
 
