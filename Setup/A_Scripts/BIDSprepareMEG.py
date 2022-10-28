@@ -103,7 +103,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
         
         	for root, dirs, files in os.walk(rawdir):
         
-            		all_files.extend(files); all_dirs.extend(files)
+            		all_files.extend(files); all_dirs.extend(dirs)
                 
         
         
@@ -121,7 +121,10 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
             		file_exists = 0
                     
             
-        	else:
+        	else:	
+
+			print("Found elsewhere")
+
             
             		new_dir = rawdir + all_dirs[0] + "/"
                 
@@ -141,7 +144,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
 #items = [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], [MEG_df_wBIDS.loc[i, 'BIDS_rawdir'] + MEG_df_wBIDS.loc[i, 'BIDS_fname']]) for i in range(len(BIDs_ID))]        
 
 
-items_test =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], MEG_df_wBIDS.loc[i, 'BIDS_rawdir'], MEG_df_wBIDS.loc[i, 'BIDS_fname']) for i in range(len(BIDs_ID))] 
+items =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], MEG_df_wBIDS.loc[i, 'BIDS_rawdir'], MEG_df_wBIDS.loc[i, 'BIDS_fname']) for i in range(len(BIDs_ID))] 
 
 
 out_find = []
