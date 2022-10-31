@@ -13,6 +13,8 @@ addpath /neuro/bin/util
 
 % Data paths
 
+% Misc scripts
+
 addpath('/home/ap09/Documents/Project_3/FTLDMEGfind/Misc')
 
 [participant_id, group] = textread(fullfile(BIDS_DIR,'participants.tsv'),'%s%s', 'headerlines', 1);
