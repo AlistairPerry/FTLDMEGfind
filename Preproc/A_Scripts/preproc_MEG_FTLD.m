@@ -24,8 +24,8 @@ function preproc_MEG_FTLD(BIDS_DIR)
 % OSL and code directories as described in readme.md
 
 % Setup OSL
-addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/osl-core')
-osl_startup
+addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/osl/osl-core')
+%osl_startup
 osl_check_installation
 
 % Add SPM
