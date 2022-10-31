@@ -53,13 +53,21 @@ basestr = [basestr ' -force'];
 autobad_flag = 1;
 
 % Set-up directories because doesn't always work in parfor loop 
+% for subnum = do_subjs
+%     sub_dir{subnum} = fullfile(OUTDIR,participant_id{subnum});
+%     try eval(sprintf('!mkdir -p %s',sub_dir{subnum})); end
+%     out_dir{subnum} = fullfile(sub_dir,'ses-meg1');
+%     try eval(sprintf('!mkdir -p %s',out_dir{subnum})); end
+%     out_dir{subnum} = fullfile(sub_dir,'ses-meg1','meg');
+%     try eval(sprintf('!mkdir -p %s',out_dir{subnum})); end
+% end
+
 for subnum = do_subjs
     sub_dir{subnum} = fullfile(OUTDIR,participant_id{subnum});
     try eval(sprintf('!mkdir %s',sub_dir{subnum})); end
-    out_dir{subnum} = fullfile(sub_dir,'ses-meg1');
-    try eval(sprintf('!mkdir %s',out_dir{subnum})); end
-    out_dir{subnum} = fullfile(sub_dir,'ses-meg1','meg');
-    try eval(sprintf('!mkdir %s',out_dir{subnum})); end
+
+    out_dir{subnum} = fullfile(sub_dir{subnum},'ses-meg1','meg');
+    try eval(sprintf('!mkdir -p %s',out_dir{subnum})); end
 end
 
 
@@ -96,15 +104,15 @@ parfor subnum = do_subjs
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % 1. Bad channel detection (this email says important if doing tSSS later https://www.jiscmail.ac.uk/cgi-bin/webadmin?A2=NEUROMEG;d3f363f3.1205)
     
-    badfile = fullfile(sub_dir{subnum},[base_name '_bad.txt']); %sprintf('bad_autobad%d.txt',autobad_flag)); 
+    badfile = fullfile(out_dir{subnum},[base_name '_bad.txt']); %sprintf('bad_autobad%d.txt',autobad_flag)); 
     
     if autobad_flag
-        outfile = fullfile(sub_dir{subnum},'bad'); logfile = fullfile(sub_dir{subnum},'bad.log');
+        outfile = fullfile(out_dir{subnum},'bad'); logfile = fullfile(out_dir{subnum},'bad.log');
         badstr  = sprintf(' -autobad %d -badlimit %d',1800,7); % 1800s is 30mins - ie enough for all do_sessions?
         
         if ~exist(logfile,'file') | OverWrite
             filestr = sprintf(' -f %s -o %s.fif',raw_file,outfile);
-            posfile = fullfile(sub_dir{subnum},[base_name '_headpos.txt']);
+            posfile = fullfile(out_dir{subnum},[base_name '_headpos.txt']);
             compstr = sprintf(' -headpos -hpistep 10 -hp %s',posfile);
             finstr = [maxfstr filestr origstr basestr badstr compstr sprintf(' -v | tee %s.log',outfile)]
             rik_eval(finstr);
@@ -134,7 +142,7 @@ parfor subnum = do_subjs
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % 2. tSSS and trans to first file
     
-    outfile = fullfile(sub_dir{subnum},[base_name '_proc-sss']); %sprintf('sss_autobad%d',autobad_flag));
+    outfile = fullfile(out_dir{subnum},[base_name '_proc-sss']); %sprintf('sss_autobad%d',autobad_flag));
     if ~exist(sprintf('%s.fif',outfile),'file') | ~exist([outfile '.log'],'file') | OverWrite
         transtr = '';
         skipstr = '';

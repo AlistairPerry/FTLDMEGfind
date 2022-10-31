@@ -45,13 +45,12 @@ def run_date_time(fname_fiff):
     year, month, day, hour, minute = d.year, d.month, d.day, d.hour, d.minute
     
     
-    time_day = round(hour + (minute / 60), 2)
+    time_day = hour
     
-    ymd = []
-    ymd = [str(year-2000), ''f"{month:02}",  f"{day:02}"]
+    ym = [str(year-2000), ''f"{month:02}"]
     
     
-    return time_day, ''.join(ymd)
+    return time_day, ''.join(ym)
 
 
 if len(sys.argv)==1:
@@ -62,4 +61,4 @@ else:
 
     fname_fiff = sys.argv[1]
 
-    time_day, ymd = run_date_time(fname_fiff)
+    time_day, ym = run_date_time(fname_fiff)
