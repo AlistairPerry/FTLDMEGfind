@@ -21,7 +21,7 @@ from pathlib import Path
 import fiff_date_time
 
 
-input_file = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/AllMEGlist_Compiled.csv'
+input_file = '/home/ap09/Documents/Project_3/AllMEGlist_Compiled.csv'
 
 
 MEG_df = pd.read_csv(input_file)
@@ -157,7 +157,7 @@ items =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], MEG_df_wBIDS
 out_find = []
 
 
-run_search = 1
+run_search = 0
 
 while run_search == 1:
 
@@ -195,7 +195,7 @@ if __name__ == '__main__':
 
 #Pull into one df
 
-MEGtd_df = pd.DataFrame({'BIDS_ID': MEG_df_wBIDS['BIDS_ID'], 'Recording_time': time_day_all, 
+MEGtd_df = pd.DataFrame({'Recording_time': time_day_all, 
                         'Recording_yearmonth': ym_all})
 
 frames = [MEG_df_wBIDS, MEGtd_df]
@@ -231,10 +231,10 @@ def anonymize_meg(megfile):
     subprocess.Popen(command_split)
    
     
-if __name__ == '__main__':
+# if __name__ == '__main__':
     
-    # create the process pool
-    with Pool() as pool:      
+#     # create the process pool
+#     with Pool() as pool:      
             
-        # call the same function with different data in parallel
-        pool.map(anonymize_meg, items)
+#         # call the same function with different data in parallel
+#         pool.map(anonymize_meg, items)
