@@ -1,4 +1,4 @@
-function BIDSmetadata(DATADIR)
+function BIDSmetadata(BASE_BIDS_DIR)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -14,9 +14,9 @@ function BIDSmetadata(DATADIR)
 
 addpath('/imaging/rowe/users/ap09/Toolbox/spm12_latest_local')
 
-addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Github/fieldtrip')
+addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/fieldtrip')
 
-addpath(genpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Github/bids-matlab'))
+addpath(genpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/bids-matlab'))
 
 
 ft_defaults()
@@ -29,7 +29,7 @@ MEGsubjlist = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_
 MEGsubjlist_tab = readtable(MEGsubjlist);
 
 
-cd(DATADIR)
+cd(BASE_BIDS_DIR)
 
 
 %% BIDS metadata basics
@@ -70,6 +70,8 @@ meg_sc.InstitutionalDepartmentName='Department of Psychiatry, University of Camb
 
 time_info = [];
 
+meg_procfname_pfix = '_ses-meg1_task-Rest_proc-sss.fif';
+
 
 %% Loop through individuals
 
@@ -78,43 +80,58 @@ n_subjs = length(MEGsubjlist_tab.BIDS_ID);
 
 parfor subj = 1:n_subjs
     
-    bidsmeg = strjoin([MEGsubjlist_tab.BIDS_rawdir(subj) '' 'ses-meg1' '/' 'meg' '/' MEGsubjlist_tab.BIDS_fname(subj)], ''); 
-
+    
     % Setup data2bids
     
-            cfg = [];
-            cfg.dataset = bidsmeg;
-            cfg.meg.PowerLineFrequency      = 50;
+    cfg = [];
+    
+    cfg.meg.PowerLineFrequency      = 50;
+    
+    % General BIDS options that apply to all data types are
+    cfg.TaskName                    = 'Resting State';
+    
+    cfg.Manufacturer                = 'Elekta';
+    cfg.ManufacturersModelName      = 'NeuroMag';
+    %             cfg.DeviceSerialNumber          = '';
+    cfg.SoftwareVersions            = '';
+    
+    % Apply to all functional data types
+    cfg.TaskDescription             = meg_sc.taskdesc{1};
+    cfg.Instructions                = meg_sc.instructions{1};
+    %             cfg.meg.ECGChannelCount         = 1; %test
+    %             cfg.meg.EOGChannelCount         = 2; %test
+    %             cfg.ECGChannelCount             = 1;
+    %             cfg.EOGChannelCount             = 2;
+    cfg.DewarPosition               = 'upright' ;
+    cfg.SoftwareFilters             = 'Max Filter';%'';
+    cfg.DigitizedLandmarks          = true;
+    cfg.DigitizedHeadPoints         = true;
 
-            % General BIDS options that apply to all data types are
-            cfg.TaskName                    = 'Resting State';
-
-            cfg.Manufacturer                = 'Elekta';
-            cfg.ManufacturersModelName      = 'NeuroMag';
-            %             cfg.DeviceSerialNumber          = '';
-            cfg.SoftwareVersions            = '';
             
-            % Apply to all functional data types
-            cfg.TaskDescription             = meg_sc.taskdesc{1};
-            cfg.Instructions                = meg_sc.instructions{1};
-%             cfg.meg.ECGChannelCount         = 1; %test
-%             cfg.meg.EOGChannelCount         = 2; %test
-%             cfg.ECGChannelCount             = 1;
-%             cfg.EOGChannelCount             = 2; 
-            cfg.DewarPosition               = 'upright' ;
-            cfg.SoftwareFilters             = 'Max Filter';%'';
-            cfg.DigitizedLandmarks          = true;
-            cfg.DigitizedHeadPoints         = true;
-
-
-    %Run
+    %Add in two files
+    
+    %Raw file
+    
+    bidsmeg = strjoin([MEGsubjlist_tab.BIDS_rawdir(subj) '' 'ses-meg1' '/' 'meg' '/' MEGsubjlist_tab.BIDS_fname(subj)], ''); 
+    
+    cfg.dataset = bidsmeg;
     
     data2bids(cfg)
     
     
+    %Proc file
+        
+    procmeg_file = [MEGsubjlist_tab.BIDS_ID(subj) '' meg_procfname_pfix];
+    
+    bidsmeg = strjoin([BASE_BIDS_DIR '/' 'derivatives/meg_derivatives' '/' MEGsubjlist_tab.BIDS_ID(subj) '/' 'ses-meg1/meg/' procmeg_file], '');
+    
+    cfg.dataset = bidsmeg;
     
     
-
+    %Remember some subjects wont exist
+    
+    try data2bids(cfg); end
+    
             
 end
 
@@ -134,7 +151,7 @@ end
 
 %Write out
 
-bids.util.tsvwrite([DATADIR 'participants.tsv'], participants_tsv);
+bids.util.tsvwrite([BASE_BIDS_DIR 'participants.tsv'], participants_tsv);
 
 
 end

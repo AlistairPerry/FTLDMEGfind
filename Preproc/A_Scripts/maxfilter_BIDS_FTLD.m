@@ -96,7 +96,7 @@ parfor subnum = do_subjs
     % Fit sphere (since better than MaxFilter does)
     
     if exist(fullfile(sub_dir{subnum},'fittmp.txt'),'file'); delete(fullfile(sub_dir{subnum},'fittmp.txt'),'file'); end
-    [orig,rad,fit] = meg_fit_sphere(raw_file,sub_dir{subnum},[base_name '_hpi.txt'],incEEG);
+    [orig,rad,fit] = meg_fit_sphere(raw_file,out_dir{subnum},[base_name '_proc-sss' '_hpi.txt'],incEEG);
     delete(fullfile(sub_dir{subnum},'fittmp.txt'))
     
     origstr = sprintf(' -origin %d %d %d -frame head',orig(1),orig(2),orig(3))
@@ -104,7 +104,7 @@ parfor subnum = do_subjs
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % 1. Bad channel detection (this email says important if doing tSSS later https://www.jiscmail.ac.uk/cgi-bin/webadmin?A2=NEUROMEG;d3f363f3.1205)
     
-    badfile = fullfile(out_dir{subnum},[base_name '_bad.txt']); %sprintf('bad_autobad%d.txt',autobad_flag)); 
+    badfile = fullfile(out_dir{subnum},[base_name '_proc-sss' '_bad.txt']); %sprintf('bad_autobad%d.txt',autobad_flag)); 
     
     if autobad_flag
         outfile = fullfile(out_dir{subnum},'bad'); logfile = fullfile(out_dir{subnum},'bad.log');
@@ -112,7 +112,7 @@ parfor subnum = do_subjs
         
         if ~exist(logfile,'file') | OverWrite
             filestr = sprintf(' -f %s -o %s.fif',raw_file,outfile);
-            posfile = fullfile(out_dir{subnum},[base_name '_headpos.txt']);
+            posfile = fullfile(out_dir{subnum},[base_name '_proc-sss' '_headpos.txt']);
             compstr = sprintf(' -headpos -hpistep 10 -hp %s',posfile);
             finstr = [maxfstr filestr origstr basestr badstr compstr sprintf(' -v | tee %s.log',outfile)]
             rik_eval(finstr);
