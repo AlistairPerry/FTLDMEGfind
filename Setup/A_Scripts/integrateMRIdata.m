@@ -37,7 +37,7 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
     
     MRI_path = [];
     
-    new_BIDSDIR = [BASE_BIDS_DIR '' MEGsubjlist_tab.BIDS_ID{subj} '/' 'anat/'];
+    new_BIDSDIR = [BASE_BIDS_DIR '' MEGsubjlist_tab.BIDS_ID{subj} '/' 'ses-meg1' '/' 'anat/'];
         
     new_BIDSDIR_deriv = [anat_deriv_DIR '/' MEGsubjlist_tab.BIDS_ID{subj} '/' 'ses-meg1' '/' 'anat/'];
     
