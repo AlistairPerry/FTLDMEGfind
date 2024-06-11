@@ -231,10 +231,10 @@ def anonymize_meg(megfile):
     subprocess.Popen(command_split)
    
     
-# if __name__ == '__main__':
+if __name__ == '__main__':
     
-#     # create the process pool
-#     with Pool() as pool:      
+    # create the process pool
+    with Pool() as pool:      
             
-#         # call the same function with different data in parallel
-#         pool.map(anonymize_meg, items)
+        # call the same function with different data in parallel
+        pool.map(anonymize_meg, items)

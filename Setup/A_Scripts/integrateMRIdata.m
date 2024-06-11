@@ -31,6 +31,8 @@ dir_path4 = '/imaging/rowe/users/lh01/FTD2010/MRIscans/PSP_Controls';
 
 dir_path5 = '/imaging/rowe/users/lh01/FTD2010/MRIscans';
 
+dir_path6 = '/imaging/rowe/users/na01/STRUCTs/Michelle_1';
+
 
 
 for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
@@ -38,7 +40,7 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
     MRI_path = [];
     
     new_BIDSDIR = [BASE_BIDS_DIR '' MEGsubjlist_tab.BIDS_ID{subj} '/' 'ses-meg1' '/' 'anat/'];
-        
+    
     new_BIDSDIR_deriv = [anat_deriv_DIR '/' MEGsubjlist_tab.BIDS_ID{subj} '/' 'ses-meg1' '/' 'anat/'];
     
     
@@ -129,48 +131,60 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
                     
                 end
                 
-                
             end
             
-                     
+            
+            
+        elseif strcmp(MEGsubjlist_tab.MRI_Dir(subj), dir_path6)
+            
+            
+            S = dir(fullfile(dir_path6,  strjoin([lower(MEGsubjlist_tab.MRI_ID(subj)) '*.nii'], '')));
+            
+            MRI_path = fullfile(S(1).folder, S(1).name);
+            
+            
         end
         
         
-        %Push to output
-        
-        %Push to data table      
-        
-        if subj == 165
-            
-            MEGsubjlist_tab.found_MRI{subj} = [];
-            
-        else
-            
-            MEGsubjlist_tab.found_MRI{subj} = MRI_path;
-            
-            MEGsubjlist_tab.BIDS_fname_MRI{subj} = strjoin([MEGsubjlist_tab.BIDS_ID(subj) '' new_bids_fname_pfix], '');
-            
-            
-            %Raw Dir
-            
-            source_MRI = [MEGsubjlist_tab.found_MRI{subj}];
-            
-            target_MRI = [new_BIDSDIR '' MEGsubjlist_tab.BIDS_fname_MRI{subj}];
-            
-            try transfer_files(source_MRI, target_MRI); end
-            
-            
-            %Derivs Dir
-            
-            target_MRI = [new_BIDSDIR_deriv '' MEGsubjlist_tab.BIDS_fname_MRI{subj}];
-            
-            try transfer_files(source_MRI, target_MRI); end
-            
-        end
         
     end
     
+    
+    %Push to output
+    
+    %Push to data table
+    
+    if subj == 165
+        
+        MEGsubjlist_tab.found_MRI{subj} = [];
+        
+    else
+        
+        MEGsubjlist_tab.found_MRI{subj} = MRI_path;
+        
+        MEGsubjlist_tab.BIDS_fname_MRI{subj} = strjoin([MEGsubjlist_tab.BIDS_ID(subj) '' new_bids_fname_pfix], '');
+        
+        
+        %Raw Dir
+        
+        source_MRI = [MEGsubjlist_tab.found_MRI{subj}];
+        
+        target_MRI = [new_BIDSDIR '' MEGsubjlist_tab.BIDS_fname_MRI{subj}];
+        
+        try transfer_files(source_MRI, target_MRI); end
+        
+        
+        %Derivs Dir
+        
+        target_MRI = [new_BIDSDIR_deriv '' MEGsubjlist_tab.BIDS_fname_MRI{subj}];
+        
+        try transfer_files(source_MRI, target_MRI); end
+        
+    end
+    
+    
 end
+
 
 
     function transfer_files(source, target)
