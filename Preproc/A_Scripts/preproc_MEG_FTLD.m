@@ -1,4 +1,4 @@
-function preproc_MEG_FTLD(BIDS_DIR)
+function preproc_MEG_FTLD(BASE_BIDS_DIR)
 
 %Stuff here
 
@@ -32,7 +32,7 @@ osl_check_installation
 addpath('/imaging/rowe/users/ap09/Toolbox/spm12_latest_local')
 
 % BIDS and Processed directories
-bidspth = BIDS_DIR; %BIDS path
+bidspth = BASE_BIDS_DIR; %BIDS path
 BIDS   = spm_BIDS(bidspth); % (If it does not work with OSL's SPM, so copy last version of spm_BIDS)
 subs   = spm_BIDS(BIDS,'subjects', 'task', 'Rest');
 nsub   = numel(subs);

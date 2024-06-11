@@ -1,4 +1,4 @@
-function maxfilter_BIDS_FTLD(BIDS_DIR)
+function maxfilter_BIDS_FTLD(BASE_BIDS_DIR)
 
 
 %Credit: Delshad
@@ -17,7 +17,7 @@ addpath /neuro/bin/util
 
 addpath('/home/ap09/Documents/Project_3/FTLDMEGfind/Misc')
 
-[participant_id, group] = textread(fullfile(BIDS_DIR,'participants.tsv'),'%s%s', 'headerlines', 1);
+[participant_id, group] = textread(fullfile(BASE_BIDS_DIR,'participants.tsv'),'%s%s', 'headerlines', 1);
 
 n_subjs = length(participant_id);
 
@@ -26,7 +26,7 @@ do_subjs = 1:n_subjs;
 
 % Ensure outputs exits
 
-OUTDIR = fullfile(BIDS_DIR,'derivatives','meg_derivatives');
+OUTDIR = fullfile(BASE_BIDS_DIR,'derivatives','meg_derivatives');
 
 mkdir(OUTDIR)
 
@@ -82,7 +82,7 @@ parfor subnum = do_subjs
     %     end
         
     base_name = sprintf('%s_ses-meg1_task-Rest',participant_id{subnum});
-    raw_file = fullfile(BIDS_DIR,participant_id{subnum},'ses-meg1','meg',[base_name '_meg.fif'])
+    raw_file = fullfile(BASE_BIDS_DIR,participant_id{subnum},'ses-meg1','meg',[base_name '_meg.fif'])
    
 %     basestr = sprintf(' -ctc %s/ct_sparse_%s.fif -cal %s/sss_cal_%s%s.dat',BIDS_DIR,site{subnum},BIDS_DIR,site{subnum},cal_ver);
 %     basestr = [basestr ' -linefreq 50 -hpisubt amp -force'];

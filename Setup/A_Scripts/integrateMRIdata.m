@@ -10,11 +10,7 @@ opts = setvartype(opts, 'MRI_ID', 'string');  %or 'char' if you prefer
 
 MEGsubjlist_tab = readtable(MEGsubjlist, opts);
 
-
-
 new_bids_fname_pfix = '_ses-meg1_T1w.nii';
-
-
 
 anat_deriv_DIR = [BASE_BIDS_DIR '' 'derivatives' '/' 'meg_derivatives'];
 
@@ -184,7 +180,6 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
     
     
 end
-
 
 
     function transfer_files(source, target)

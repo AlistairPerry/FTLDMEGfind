@@ -14,7 +14,7 @@ function BIDSmetadata(BASE_BIDS_DIR)
 
 addpath('/imaging/rowe/users/ap09/Toolbox/spm12_latest_local')
 
-addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/fieldtrip')
+addpath('/imaging/rowe/users/ap09/Toolbox/fieldtrip')
 
 addpath(genpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/bids-matlab'))
 

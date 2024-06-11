@@ -157,9 +157,9 @@ items =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], MEG_df_wBIDS
 out_find = []
 
 
-run_search = 0
+run_search = 1
 
-while run_search == 1:
+if run_search == 1:
 
     # entry point for the program
     if __name__ == '__main__':
