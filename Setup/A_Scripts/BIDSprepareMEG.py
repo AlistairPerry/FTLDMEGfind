@@ -11,37 +11,35 @@ Setup
 
 '''
 
-
+# Import libraries
 import pandas as pd
 import os
 from multiprocessing import Pool
 from pathlib import Path
 
-
+# Import anonymization script 
 import fiff_date_time
 
+# Import MEG list
+input_file = '/imaging/rowe/FTLD_rsMEG/Misc/AllMEGlist_Compiled.csv'
 
-input_file = '/home/ap09/Documents/Project_3/AllMEGlist_Compiled.csv'
-
-
+# Read df
 MEG_df = pd.read_csv(input_file)
 
+# Set output dir for BIDS data
+BIDS_basedir = "/imaging/rowe/FTLD_rsMEG/Release/"
 
-BIDS_basedir = "/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Release/"
-
+# Setup output
 sess = "ses-meg1"
 
 megfname_pfix  = "task-Rest_meg.fif"
 
-
-
-
+# Loop through BIDs info from subjects
 BIDs_ID = []
 
 BIDs_rawdir = []
 
 BIDs_fname = []
-
 
 for x in range(1, len(MEG_df['S_ID'])+1):
     
@@ -54,7 +52,6 @@ for x in range(1, len(MEG_df['S_ID'])+1):
     BIDs_fname.append(new_ID + "_" + sess + "_" + megfname_pfix)
 
 
-
 #Join together
 
 frames = [pd.DataFrame({'BIDS_ID': BIDs_ID, 'BIDS_rawdir': BIDs_rawdir, 
@@ -63,7 +60,6 @@ frames = [pd.DataFrame({'BIDS_ID': BIDs_ID, 'BIDS_rawdir': BIDs_rawdir,
 MEG_df_wBIDS = pd.concat(frames, axis=1)    
     
 MEG_df_wBIDS['Dir'] = MEG_df_wBIDS['Dir'].apply(lambda x: x + "/")
-
 
 
 
@@ -100,9 +96,6 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
         
         #Check
         
-        
-        
-        
         all_dirs = []; all_files = [] 
             
                 
@@ -111,15 +104,13 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
             all_files.extend(files)
             all_dirs.extend(dirs)
                 
-        
-        
+              
         #Need to lower-case
                 
         all_files_lc = list(map(str.lower, all_files))
         
         
-        try:
-                
+        try:               
                 
             idx = all_files_lc.index(rawfile_lc)
 			
@@ -153,9 +144,7 @@ def copy_megfile_toBIDS(rawdir, rawmegfile, targbidsdir, targbidsfile):
 
 items =  [(MEG_df_wBIDS.loc[i, 'Dir'], MEG_df_wBIDS.loc[i, 'File'], MEG_df_wBIDS.loc[i, 'BIDS_rawdir'], MEG_df_wBIDS.loc[i, 'BIDS_fname']) for i in range(len(BIDs_ID))] 
 
-
 out_find = []
-
 
 run_search = 1
 
@@ -169,7 +158,6 @@ if run_search == 1:
             
             # call the same function with different data in parallel
             pool.starmap(copy_megfile_toBIDS, items)
-
 
 
 ''' Extract time date info '''
@@ -205,8 +193,7 @@ MEG_df_wBIDS_fin = pd.concat(frames, axis=1)
 MEG_df_wBIDS_fin.to_csv('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_wBIDS.csv', index=False)
 
 
-
-''' Anonymize '''
+''' Anonymize MEG info'''
 
 
 def anonymize_meg(megfile):
