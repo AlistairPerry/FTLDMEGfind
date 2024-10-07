@@ -24,7 +24,8 @@ function preproc_MEG_FTLD(BASE_BIDS_DIR)
 % OSL and code directories as described in readme.md
 
 % Setup OSL
-addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/osl/osl-core')
+addpath('/imaging/rowe/FTLD_rsMEG/Code/osl/osl-core')
+
 %osl_startup
 osl_check_installation
 
@@ -44,7 +45,7 @@ procpth = fullfile(bidspth,'derivatives','meg_derivatives'); % If want maxfilter
 % Please do all analysis in a separate directory from BIDS
 % Here we call it "Processed"
 
-processed_pth = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Processed/';
+processed_pth = '/imaging/rowe/FTLD_rsMEG/FTD-MEG-MEM_3/Processed/';
 
 if ~exist(processed_pth,'dir')
     

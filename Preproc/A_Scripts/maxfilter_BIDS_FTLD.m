@@ -15,7 +15,7 @@ addpath /neuro/bin/util
 
 % Misc scripts
 
-addpath('/home/ap09/Documents/Project_3/FTLDMEGfind/Misc')
+addpath('/imaging/rowe/FTLD_rsMEG/Code/FTLDMEGfind/Misc')
 
 [participant_id, group] = textread(fullfile(BASE_BIDS_DIR,'participants.tsv'),'%s%s', 'headerlines', 1);
 
