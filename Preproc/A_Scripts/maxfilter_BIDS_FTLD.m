@@ -35,7 +35,7 @@ mkdir(OUTDIR)
 %% Maxfilter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-maxfstr = '!/neuro/bin/util/x86_64-pc-linux-gnu/maxfilter-2.2.12 '
+maxfstr = '!/neuro/bin/util/x86_64-pc-linux-gnu/maxfilter-2.2.14 '
 %%tSSSstr = ' -st 10 -corr 0.98'; 
 %tSSSstr = ' -st 10 -corr 0.9'; 
 tSSSstr = '';
@@ -46,7 +46,7 @@ Nbuf = 600; % Number of buffers per session
 
 
 %Basestr
-basestr = ' -ctc /neuro/databases/ctc/ct_sparse.fif -cal /neuro/databases/sss/sss_cal.dat';
+basestr = ' -ctc /neuro/databases/ctc/ct_sparse_vectorview.fif -cal /neuro/databases/sss/sss_cal_vectorview.dat';
 basestr = [basestr ' -linefreq 50 -hpisubt amp'];
 basestr = [basestr ' -force'];
 
