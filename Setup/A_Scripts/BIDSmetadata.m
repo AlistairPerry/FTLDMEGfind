@@ -151,7 +151,7 @@ end
 
 %Write out
 
-bids.util.tsvwrite([BASE_BIDS_DIR 'participants.tsv'], participants_tsv);
+bids.util.tsvwrite([BASE_BIDS_DIR '/' 'participants.tsv'], participants_tsv);
 
 
 end

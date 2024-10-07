@@ -11,10 +11,10 @@ addpath(genpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/bids-matla
 addpath(genpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/defacing'));
 
 % Misc 
-addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/FTLDMEGfind/Misc');
+addpath('/home/ap09/Documents/Project_3/FTLDMEGfind/Misc');
 
 % Fieldtrip
-addpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/fieldtrip')
+addpath('/imaging/rowe/users/ap09/Toolbox/fieldtrip')
 
 ft_defaults()
 
@@ -33,18 +33,16 @@ n_subjs = length(participants.participant_id);
 
 MRI_bname = '_ses-meg1_T1w';
 
-nat2talstr = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/defacing/nat2tal.sh';
+nat2talstr = '/home/ap09/Documents/Project_3/FTLDMEGfind/Misc/nat2tal.sh';
 
 
 %Template dir (for defacing)
 deface_tempdir = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/';
 
 %Test
-participants_test_idx = randi(n_subjs, 1, 10);
+% participants_test_idx = randi(n_subjs, 1, 10);
 
-participants_test = participants.participant_id(participants_test_idx);
-
-
+% participants_test = participants.participant_id(participants_test_idx);
 
 %% Deface
 
@@ -82,15 +80,13 @@ participants_test = participants.participant_id(participants_test_idx);
 
 %Need to first perform transformation first
 
-
-for subj = 1:length(participants_test)
+for subj = 1:length(participants.participant_id)
     
-    subj_id = participants_test{subj};
+    subj_id = participants.participant_id{subj};
     
     subj_BIDSDIR_deriv = [BIDSDIR_deriv '' subj_id '/' 'ses-meg1' '/' 'anat' '/'];
     
     orig_fname = [subj_BIDSDIR_deriv '/' subj_id '' MRI_bname '.nii.gz'];
-    
     
     %Create transform to talariach space
     %see https://github.com/AlistairPerry/defacing#2-transformation-to-tailarach-space)
@@ -104,6 +100,8 @@ for subj = 1:length(participants_test)
         %Catch to see if above completed
         
         if isfile([subj_BIDSDIR_deriv '' subj_id '' MRI_bname '_nat2tal' '.xfm'])
+            
+            disp(subj_BIDSDIR_deriv)
             
             s1_defaceMRI_onlytrim(subj_BIDSDIR_deriv);
             

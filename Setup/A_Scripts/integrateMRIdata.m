@@ -12,7 +12,7 @@ MEGsubjlist_tab = readtable(MEGsubjlist, opts);
 
 new_bids_fname_pfix = '_ses-meg1_T1w.nii';
 
-anat_deriv_DIR = [BASE_BIDS_DIR '' 'derivatives' '/' 'meg_derivatives'];
+anat_deriv_DIR = [BASE_BIDS_DIR '/' 'derivatives' '/' 'meg_derivatives'];
 
 
 %% Setup dir paths
@@ -35,10 +35,10 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
     
     MRI_path = [];
     
-    new_BIDSDIR = [BASE_BIDS_DIR '' MEGsubjlist_tab.BIDS_ID{subj} '/' 'ses-meg1' '/' 'anat/'];
+    new_BIDSDIR = [BASE_BIDS_DIR '/' MEGsubjlist_tab.BIDS_ID{subj} '/' 'ses-meg1' '/' 'anat/'];
     
     new_BIDSDIR_deriv = [anat_deriv_DIR '/' MEGsubjlist_tab.BIDS_ID{subj} '/' 'ses-meg1' '/' 'anat/'];
-    
+
     
     %For now only include those with dir
     if strcmp(MEGsubjlist_tab.MRI_ID(subj), "")
@@ -136,7 +136,13 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
             
             S = dir(fullfile(dir_path6,  strjoin([lower(MEGsubjlist_tab.MRI_ID(subj)) '*.nii'], '')));
             
-            MRI_path = fullfile(S(1).folder, S(1).name);
+            try
+                MRI_path = fullfile(S(1).folder, S(1).name);
+            
+            catch
+                warning('Cant find MRI for subj %i', subj)
+                
+            end
             
             
         end
@@ -180,6 +186,9 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
     
     
 end
+
+% Write out metadata sheet (to see about missing T1s)
+writetable(MEGsubjlist_tab, '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_wBIDS_4debugT1.csv')
 
 
     function transfer_files(source, target)
