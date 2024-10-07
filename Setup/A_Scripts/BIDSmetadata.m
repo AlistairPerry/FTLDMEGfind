@@ -12,25 +12,24 @@ function BIDSmetadata(BASE_BIDS_DIR)
 
 %Paths
 
+% Point to SPM and field trip paths
 addpath('/imaging/rowe/users/ap09/Toolbox/spm12_latest_local')
 
 addpath('/imaging/rowe/users/ap09/Toolbox/fieldtrip')
 
-addpath(genpath('/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Code/bids-matlab'))
-
+% BIDs repos
+addpath(genpath('/imaging/rowe/FTLD_rsMEG/Code/bids-matlab'))
 
 ft_defaults()
 
-
 %Data paths
 
-MEGsubjlist = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_wBIDS.csv';
+MEGsubjlist = '/imaging/rowe/FTLD_rsMEG/Misc/MEGsubjlist_wBIDS.csv';
 
 MEGsubjlist_tab = readtable(MEGsubjlist);
 
 
 cd(BASE_BIDS_DIR)
-
 
 %% BIDS metadata basics
 

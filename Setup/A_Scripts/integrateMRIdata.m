@@ -1,8 +1,7 @@
 function integrateMRIdata(BASE_BIDS_DIR)
 
-
-MEGsubjlist = '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_wBIDS.csv';
-
+% List of MEG BIDS patients
+MEGsubjlist = '/imaging/rowe/FTLD_rsMEG/Misc/MEGsubjlist_wBIDS.csv';
 
 %Ensure MRI_ID is read as string
 opts = detectImportOptions(MEGsubjlist);
@@ -188,7 +187,7 @@ for subj = 1:length(MEGsubjlist_tab.BIDS_ID)
 end
 
 % Write out metadata sheet (to see about missing T1s)
-writetable(MEGsubjlist_tab, '/imaging/rowe/users/ap09/Projects/FTD-MEG-MEM_3/Misc/MEGsubjlist_wBIDS_4debugT1.csv')
+writetable(MEGsubjlist_tab, '/imaging/rowe/FTLD_rsMEG/Misc/MEGsubjlist_wBIDS_4debugT1.csv')
 
 
     function transfer_files(source, target)
